@@ -29,14 +29,14 @@ jobs:
           echo "VOLTA_HOME=$HOME/.volta" >> $GITHUB_ENV
           echo "PATH=$HOME/.volta/bin:$PATH" >> $GITHUB_ENV
 
-      - name: Cache (brew)
-        uses: actions/cache@v2
-        if: ${{ runner.os == 'macOS' }}
-        with:
-          path: $HOMEBREW_CACHE
-          key: ${{ runner.os }}-brew-${{ hashFiles('Brewfile') }}
-          restore-keys: |
-            ${{ runner.os }}-brew
+      # - name: Cache (brew)
+      #   uses: actions/cache@v2
+      #   if: ${{ runner.os == 'macOS' }}
+      #   with:
+      #     path: $HOMEBREW_CACHE
+      #     key: ${{ runner.os }}-brew-${{ hashFiles('Brewfile') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-brew
 
       - name: Install prerequisites
         if: ${{ runner.os == 'macOS' }}
@@ -63,26 +63,23 @@ jobs:
         uses: ./.github/actions/setup-pip
         id: pip
 
-      - name: Cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            ${{ steps.pip.outputs.pip-cache-dir }}
-            ~/.pyenv
-          key: ${{ runner.os }}-pip-py${{ steps.python-version.outputs.python-version }}-${{ hashFiles('**/requirements-*.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-py${{ steps.python-version.outputs.python-version }}
+      # - name: Cache
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: |
+      #       ${{ steps.pip.outputs.pip-cache-dir }}
+      #       ~/.pyenv
+      #     key: ${{ runner.os }}-pip-py${{ steps.python-version.outputs.python-version }}-${{ hashFiles('**/requirements-*.txt') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-pip-py${{ steps.python-version.outputs.python-version }}
 
       - name: Set up development environment (as per docs)
-        # XXX: It's unfortunate we need to call pyenv init - to make the Python version be switched correctly
+        # XXX: I can't figure out out why we need to call `source "$HOME/.bashrc"` when we already did a previous step
         # TODO: Upstream installing wheel to bootstrap-sentry
         run: |
           env | grep TERM
           python -V
           source "$HOME/.bashrc"
-          python -V
-          eval "$(pyenv init -)"
-          python -V
           python -m venv .venv
           source .venv/bin/activate
           pip install wheel
