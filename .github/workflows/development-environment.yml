@@ -19,17 +19,19 @@ jobs:
         os: [ macos-latest ]
     env:
       PIP_DISABLE_PIP_VERSION_CHECK: on
+      # Make the environment more similar to what Mac defaults to
+      SHELL: /bin/zsh
 
     steps:
       - uses: actions/checkout@v2
 
       - name: Set environment variables & others
         if: ${{ runner.os == 'macOS' }}
-        shell: bash
         run: |
           echo "HOMEBREW_CACHE=`brew --cache`" >> $GITHUB_ENV
           echo "VOLTA_HOME=$HOME/.volta" >> $GITHUB_ENV
           echo "PATH=$HOME/.volta/bin:$PATH" >> $GITHUB_ENV
+          touch "$HOME/.zshrc"
 
       # - name: Cache (brew)
       #   uses: actions/cache@v2
@@ -52,11 +54,10 @@ jobs:
 
       - name: Install Python (via Pyenv)
         id: python-version
-        shell: bash
         # XXX: Can we cache the installed Python environments?
         run: |
           make setup-pyenv
-          source "$HOME/.bashrc"
+          source "$HOME/.zshrc"
           python -V
           [[ $(python -V | sed s/Python\ //g) != $(cat .python-version) ]] && echo "Wrong Python version: $(python -V)" && exit 1
           echo "::set-output name=python-version::$(python -V  | sed s/Python\ //g)"
@@ -79,7 +80,7 @@ jobs:
         # XXX: I can't figure out out why we need to call `source "$HOME/.bashrc"` when we already did a previous step
         run: |
           python -V
-          source "$HOME/.bashrc"
+          source "$HOME/.zshrc"
           python -V
           [[ $(python -V | sed s/Python\ //g) != $(cat .python-version) ]] && echo "Wrong Python version: $(python -V)" && exit 1
           python -m venv .venv
