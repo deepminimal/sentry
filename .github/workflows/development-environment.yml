@@ -84,6 +84,7 @@ jobs:
           python -V
           exec "$SHELL"
           python -V
+          [[ $(which python) == /usr/bin/python ]] && echo "This is using the host' default Python" && exit 1
           python -m venv .venv
           source .venv/bin/activate
           make install-py-dev
