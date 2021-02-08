@@ -75,14 +75,12 @@ jobs:
 
       - name: Set up development environment (as per docs)
         # XXX: I can't figure out out why we need to call `source "$HOME/.bashrc"` when we already did a previous step
-        # TODO: Upstream installing wheel to bootstrap-sentry
         run: |
           env | grep TERM
           python -V
           source "$HOME/.bashrc"
           python -m venv .venv
           source .venv/bin/activate
-          pip install wheel
           make install-py-dev
           make setup-git
           curl https://get.volta.sh | bash

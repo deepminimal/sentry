@@ -79,6 +79,9 @@ setup_pyenv() {
   # If the script is called with the "dot space right" approach (. ./scripts/pyenv_setup.sh),
   # the effects of this will be persistent outside of this script
   eval "$(pyenv init -)"
+  # The Python version installed via pyenv does not come with wheel pre-installed
+  # Installing wheel will speed up installation of Python dependencies
+  pip install wheel
 }
 
 setup_pyenv
