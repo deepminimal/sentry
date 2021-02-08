@@ -17,6 +17,8 @@ jobs:
     strategy:
       matrix:
         os: [ macos-latest ]
+    env:
+      PIP_DISABLE_PIP_VERSION_CHECK: on
 
     steps:
       - uses: actions/checkout@v2
@@ -55,6 +57,7 @@ jobs:
         run: |
           make setup-pyenv
           source "$HOME/.bashrc"
+          python -V
           [[ $(which python) == /usr/bin/python ]] && echo "It fails to set correct Python" && exit 1
           env | grep TERM
           echo "::set-output name=python-version::$(python -V  | sed s/Python\ //g)"

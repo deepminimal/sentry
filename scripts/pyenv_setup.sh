@@ -82,6 +82,8 @@ setup_pyenv() {
   # The Python version installed via pyenv does not come with wheel pre-installed
   # Installing wheel will speed up installation of Python dependencies
   pip install wheel
+  # Make sure we have a somewhat modern pip package
+  pip install --upgrade "pip>=20.0.2"
 }
 
 setup_pyenv
