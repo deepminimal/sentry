@@ -86,6 +86,8 @@ jobs:
           python -V
           source "$HOME/.zshrc"
           python -V
+          eval "$(pyenv init -)"
+          python -V
           [[ $(python -V | sed s/Python\ //g) != $(cat .python-version) ]] && echo "Wrong Python version: $(python -V)" && exit 1
           python -m venv .venv
           source .venv/bin/activate
