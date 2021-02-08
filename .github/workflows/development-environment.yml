@@ -58,6 +58,10 @@ jobs:
         run: |
           make setup-pyenv
           source "$HOME/.zshrc"
+          echo ${SHELL}
+          python -V
+          cat "$HOME/.zshrc"
+          eval "$(pyenv init -)"
           python -V
           [[ $(python -V | sed s/Python\ //g) != $(cat .python-version) ]] && echo "Wrong Python version: $(python -V)" && exit 1
           echo "::set-output name=python-version::$(python -V  | sed s/Python\ //g)"
