@@ -80,7 +80,7 @@ jobs:
       - name: Set up development environment (as per docs)
         # XXX: I can't figure out out why we need to call `source "$HOME/.bashrc"` when we already did a previous step
         run: |
-          env | grep TERM
+          env | sort
           python -V
           exec "$SHELL"
           python -V
