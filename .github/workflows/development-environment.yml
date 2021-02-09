@@ -59,13 +59,6 @@ jobs:
           make setup-pyenv
           python -V
           source "$HOME/.zshrc"
-          echo ${SHELL}
-          python -V
-          source "$HOME/.zshrc"
-          python -V
-          source "$HOME/.bash_profile"
-          python -V
-          source "$HOME/.bashrc"
           python -V
           [[ $(python -V | sed s/Python\ //g) != $(cat .python-version) ]] && echo "Wrong Python version: $(python -V)" && exit 1
           echo "::set-output name=python-version::$(python -V  | sed s/Python\ //g)"
@@ -90,8 +83,6 @@ jobs:
           python -V
           source "$HOME/.zshrc"
           python -V
-          source "$HOME/.bashrc"
-          python -V
           [[ $(python -V | sed s/Python\ //g) != $(cat .python-version) ]] && echo "Wrong Python version: $(python -V)" && exit 1
           python -m venv .venv
           source .venv/bin/activate
@@ -105,5 +96,7 @@ jobs:
         # make init-config will *not* prompt about overwriting ~/.sentry/config.yml' since we're on a pristine state
         # We cannot test the git hooks until the `sentry.lint.engine` gets installed
         run: |
+          python -V
+          source "$HOME/.zshrc"
           source .venv/bin/activate
           make develop init-config

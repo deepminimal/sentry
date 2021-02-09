@@ -71,7 +71,6 @@ setup_pyenv() {
     # shellcheck disable=SC2016
     if ! grep -qF 'eval "$(pyenv init -)"' "${_startup_script}"; then
       # pyenv init - is needed to include the pyenv shims in your PATH
-      # shellcheck disable=SC2016
       echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> "${_startup_script}"
       # echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> "$HOME/.bash_profile"
     fi
@@ -79,12 +78,13 @@ setup_pyenv() {
 
   # If the script is called with the "dot space right" approach (. ./scripts/pyenv_setup.sh),
   # the effects of this will be persistent outside of this script
-  # source "${_startup_script}"
+  # shellcheck disable=SC1090
+  source "${_startup_script}"
   # The Python version installed via pyenv does not come with wheel pre-installed
   # Installing wheel will speed up installation of Python dependencies
-  # pip install wheel
+  pip install wheel
   # Make sure we have a somewhat modern pip package
-  # pip install --upgrade "pip>=20.0.2"
+  pip install --upgrade "pip>=20.0.2"
 }
 
 setup_pyenv
