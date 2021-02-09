@@ -66,13 +66,12 @@ setup_pyenv() {
 
   _startup_script=$(get_shell_startup_script)
   echo "Adding pyenv init (if missing) to ${_startup_script}..."
-  set -x
+
   if [ -n "$_startup_script" ]; then
     # shellcheck disable=SC2016
     if ! grep -qF 'eval "$(pyenv init -)"' "${_startup_script}"; then
       # pyenv init - is needed to include the pyenv shims in your PATH
       echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> "${_startup_script}"
-      # echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> "$HOME/.bash_profile"
     fi
   fi
 
