@@ -60,8 +60,17 @@ jobs:
           source "$HOME/.zshrc"
           echo ${SHELL}
           python -V
+          echo "Foo - zshrc"
           cat "$HOME/.zshrc"
+          echo "Foo - bash_profile"
           cat "$HOME/.bash_profile"
+          echo "Foo - bashrc"
+          cat "$HOME/.bashrc"
+          python -V
+          source "$HOME/.bashrc"
+          python -V
+          source "$HOME/.bash_profile"
+          python -V
           eval "$(pyenv init -)"
           python -V
           [[ $(python -V | sed s/Python\ //g) != $(cat .python-version) ]] && echo "Wrong Python version: $(python -V)" && exit 1
