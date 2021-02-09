@@ -33,14 +33,14 @@ jobs:
           echo "PATH=$HOME/.volta/bin:$PATH" >> $GITHUB_ENV
           touch "$HOME/.zshrc"
 
-      # - name: Cache (brew)
-      #   uses: actions/cache@v2
-      #   if: ${{ runner.os == 'macOS' }}
-      #   with:
-      #     path: $HOMEBREW_CACHE
-      #     key: ${{ runner.os }}-brew-${{ hashFiles('Brewfile') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-brew
+      - name: Cache (brew)
+        uses: actions/cache@v2
+        if: ${{ runner.os == 'macOS' }}
+        with:
+          path: $HOMEBREW_CACHE
+          key: ${{ runner.os }}-brew-${{ hashFiles('Brewfile') }}
+          restore-keys: |
+            ${{ runner.os }}-brew
 
       - name: Install prerequisites
         if: ${{ runner.os == 'macOS' }}
@@ -50,7 +50,7 @@ jobs:
         # Xcode CLI & brew are already installed, thus, no need to call xcode-select install
         # XXX: Can the Brew set up be cached?
         run: |
-          brew install pyenv
+          brew bundle
 
       - name: Install Python (via Pyenv)
         id: python-version
@@ -62,16 +62,14 @@ jobs:
           python -V
           echo "Foo - zshrc"
           cat "$HOME/.zshrc"
-          echo "Foo - bash_profile"
-          cat "$HOME/.bash_profile"
           echo "Foo - bashrc"
           cat "$HOME/.bashrc"
           python -V
-          source "$HOME/.bashrc"
+          source "$HOME/.zshrc"
           python -V
           source "$HOME/.bash_profile"
           python -V
-          eval "$(pyenv init -)"
+          source "$HOME/.bashrc"
           python -V
           [[ $(python -V | sed s/Python\ //g) != $(cat .python-version) ]] && echo "Wrong Python version: $(python -V)" && exit 1
           echo "::set-output name=python-version::$(python -V  | sed s/Python\ //g)"
@@ -96,7 +94,7 @@ jobs:
           python -V
           source "$HOME/.zshrc"
           python -V
-          eval "$(pyenv init -)"
+          source "$HOME/.bashrc"
           python -V
           [[ $(python -V | sed s/Python\ //g) != $(cat .python-version) ]] && echo "Wrong Python version: $(python -V)" && exit 1
           python -m venv .venv
