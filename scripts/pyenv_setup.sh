@@ -66,7 +66,7 @@ setup_pyenv() {
 
   _startup_script=$(get_shell_startup_script)
   echo "Adding pyenv init (if missing) to ${_startup_script}..."
-
+  set -x
   if [ -n "$_startup_script" ]; then
     # shellcheck disable=SC2016
     if ! grep -qF 'eval "$(pyenv init -)"' "${_startup_script}"; then
